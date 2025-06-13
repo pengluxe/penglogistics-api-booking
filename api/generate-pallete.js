@@ -1,10 +1,10 @@
 export default function handler(req, res) {
   const { primary, sector, avatar } = req.query;
 
-  // Default values to avoid crashes
+  // Normalize inputs
   const primaryColor = primary || "#FF5733";
   const sectorKey = (sector || "").toLowerCase();
-  const avatarKey = avatar || "Professionals";
+  const avatarKey = avatar?.trim() || "Professionals";
 
   const sectorColors = {
     fashion: ["#000000", "#FF69B4", "#FFD700", "#FFFFFF", "#808080"],
@@ -21,12 +21,20 @@ export default function handler(req, res) {
     "Small business owners": ["#27AE60", "#F39C12", "#D35400", "#C0392B", "#2980B9"]
   };
 
+  const fallbackSector = sectorColors["logistics"];
+  const fallbackAvatar = avatarColors["Professionals"];
+
+  const selectedSector = sectorColors[sectorKey] || fallbackSector;
+  const selectedAvatar = avatarColors[avatarKey] || fallbackAvatar;
+
   const palette = [
     primaryColor,
-    ...(sectorColors[sectorKey]?.slice(0, 2) || []),
-    ...(avatarColors[avatarKey]?.slice(0, 2) || [])
-  ].slice(0, 5);
+    selectedSector[0],
+    selectedSector[1],
+    selectedAvatar[0],
+    selectedAvatar[1]
+  ];
 
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Optional for Blogger fetch
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.status(200).json({ palette });
 }
