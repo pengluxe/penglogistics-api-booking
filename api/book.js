@@ -33,3 +33,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: 'Server error', error: error.message });
   }
 }
+console.log("Sending to Dora:", {
+  pickup, dropoff, item_type, note
+});
+console.log("Dora Response:", data);
