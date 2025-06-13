@@ -1,10 +1,9 @@
 export default function handler(req, res) {
   const { primary, sector, avatar } = req.query;
 
-  // Normalize inputs
-  const primaryColor = primary || "#FF5733";
-  const sectorKey = (sector || "").toLowerCase();
-  const avatarKey = avatar?.trim() || "Professionals";
+  const primaryColor = /^#[0-9A-Fa-f]{6}$/.test(primary) ? primary : "#FF5733";
+  const sectorKey = (sector || "").toLowerCase().trim();
+  const avatarKey = (avatar || "Professionals").trim();
 
   const sectorColors = {
     fashion: ["#000000", "#FF69B4", "#FFD700", "#FFFFFF", "#808080"],
@@ -21,11 +20,8 @@ export default function handler(req, res) {
     "Small business owners": ["#27AE60", "#F39C12", "#D35400", "#C0392B", "#2980B9"]
   };
 
-  const fallbackSector = sectorColors["logistics"];
-  const fallbackAvatar = avatarColors["Professionals"];
-
-  const selectedSector = sectorColors[sectorKey] || fallbackSector;
-  const selectedAvatar = avatarColors[avatarKey] || fallbackAvatar;
+  const selectedSector = sectorColors[sectorKey] || sectorColors["logistics"];
+  const selectedAvatar = avatarColors[avatarKey] || avatarColors["Professionals"];
 
   const palette = [
     primaryColor,
