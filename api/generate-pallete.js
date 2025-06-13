@@ -1,7 +1,8 @@
 export default function handler(req, res) {
   const { primary, sector, avatar } = req.query;
 
-  const primaryColor = /^#[0-9A-Fa-f]{6}$/.test(primary) ? primary : "#FF5733";
+  const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(primary);
+  const primaryColor = isValidHex ? primary : "#FF5733";
   const sectorKey = (sector || "").toLowerCase().trim();
   const avatarKey = (avatar || "Professionals").trim();
 
